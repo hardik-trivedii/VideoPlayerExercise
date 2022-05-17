@@ -19,6 +19,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
+import com.google.android.exoplayer2.ui.StyledPlayerControlView;
 import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
@@ -158,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
                 video.fullURL = videoData.getString(FULL_URL);
                 video.description = videoData.getString(DESCRIPTION);
                 video.publishedAt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(videoData.getString(PUBLISHED_AT));
-                Log.e("", ""+video.publishedAt.toString());
                 video.author = videoData.getJSONObject(AUTHOR).getString(AUTHOR_NAME);
                 videos.add(video);
             }
@@ -178,14 +178,12 @@ public class MainActivity extends AppCompatActivity {
         Collections.sort(videos, new Comparator<VideoDetail>() {
             @Override
             public int compare(VideoDetail lhs, VideoDetail rhs) {
-                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
                 return lhs.publishedAt.compareTo(rhs.publishedAt);
             }
         });
     }
 
     private void setUIAsPerVideoIndex(int videoIndex){
-        Log.d("", "Video: "+ videoIndex);
         DataSource.Factory dataSourceFactory = new DefaultHttpDataSource.Factory();
         HlsMediaSource hlsMediaSource =
                 new HlsMediaSource.Factory(dataSourceFactory)
